@@ -1,5 +1,6 @@
 package dao;
 
+import dao.db.DBManager;
 import entity.Service;
 import entity.User;
 
@@ -7,19 +8,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static dao.sql.DBConnectionSQL.*;
+
 public class ServiceDAO {
 
     public List<Service> getAllServices() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        String DATABASE_URL = "jdbc:mysql://localhost:3306/beautysalon?user=root&password=rootroot";
         List<Service> allServices = new ArrayList<>();
-        String sql = "SELECT * FROM service";
-        try (Connection connection = DriverManager.getConnection(DATABASE_URL);
-             PreparedStatement statement = connection.prepareStatement(sql)){
+        try (Connection connection = DBManager.getDBConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_ALL_SERVICES)){
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Service service = new Service();

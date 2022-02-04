@@ -11,4 +11,9 @@ public class DBConnectionSQL {
     public static final String SET_ROLE_FOR_USER = "UPDATE user SET role_id ? WHERE user.email = ?";
     public static final String GET_ROLE_FOR_USER = "SELECT role.name FROM user JOIN role ON user.role_id = role.id WHERE user.email = ?";
     public static final String GET_ROLE_ID_BY_NAME = "SELECT id FROM role WHERE role_name = ?";
+
+    /**
+     * SQL requests for Service DAO
+     */
+    public static final String SELECT_ALL_SERVICES = "SELECT * FROM service";
 }
