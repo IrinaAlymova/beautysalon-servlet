@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class ReviewMailSender implements MailSender {
     private final String myAccountEmail = "i.o.alymova@gmail.com";
-    private final String myAccountPassword = "TellMeMoreAboutCasablanca5748+"; //put in config file and hide pass
+    private final String myAccountPassword = ""; //put in config file
     Properties properties = new Properties();
 
     {
