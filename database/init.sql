@@ -30,8 +30,8 @@ CREATE TABLE user
 
 INSERT INTO user (id, name, email, password, role_id, created)
 VALUES (DEFAULT, 'Irina Alymova', 'i.o.alymova@gmail.com', 'qwerty', 3, DEFAULT),
-       (DEFAULT, 'Dmytro Halushchak', 'dmitry.galuschak@gmail.com', 'qwerty', 1, DEFAULT),
-       (DEFAULT, 'Dmitriy Galushchak', 'leadhunter.tech@gmail.com', 'qwerty', 1, DEFAULT),
-       (DEFAULT, 'Camilla Bridge', 'camilla.bridge@gmail.com', 'qwerty', 2, DEFAULT),
-       (DEFAULT, 'Lolly Finch', 'lolly.finch@gmail.com', 'qwerty', 2, DEFAULT),
-       (DEFAULT, 'Samantha Jones', 'smantha.jones@gmail.com', 'qwerty', 2, DEFAULT);
+       (DEFAULT, 'Brigitte Fine', 'bridgite.fine@mymail.com', 'qwerty', 1, DEFAULT),
+       (DEFAULT, 'Cynthia Kim', 'cynthia.kim@mymail.com', 'qwerty', 1, DEFAULT),
+       (DEFAULT, 'Camilla Bridge', 'camilla.bridge@mymail.com', 'qwerty', 2, DEFAULT),
+       (DEFAULT, 'Lolly Finch', 'lolly.finch@mymail.com', 'qwerty', 2, DEFAULT),
+       (DEFAULT, 'Samantha Jones', 'smantha.jones@mymail.com', 'qwerty', 2, DEFAULT);
