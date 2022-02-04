@@ -1,3 +1,5 @@
+_Project is being developed at the moment. Project is still lacking of some features._
+
 # Beauty Salon
 
 Beauty Salon is a servlet based web application for bookings management at a beauty salon.
