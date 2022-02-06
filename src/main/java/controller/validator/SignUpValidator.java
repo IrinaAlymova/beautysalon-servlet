@@ -5,7 +5,7 @@ package controller.validator;
  */
 
 public class SignUpValidator {
-    private String EMAIL_VALIDATION_REGEXP = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+    private static final String EMAIL_VALIDATION_REGEXP = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
     /**
      * Validate email input

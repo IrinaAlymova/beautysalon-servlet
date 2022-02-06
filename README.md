@@ -30,7 +30,7 @@ Created as a final study project for Epam Java Course.
 ## Tech requirements and constraints
 
 1. The system is based on **Servlet API**, with Tomcat as servlet container.
-2. Domain information is stored in a relational database (**MySQL**). Database access is based on **JDBC API** and connection pool. The use of any ORM frameworks was not allowed.
+2. Domain information is stored in a relational database (**MySQL**). Database access is based on **JDBC API** and **Hikari** connection pool. The use of any ORM frameworks was not allowed.
 3. The system architecture represents the **MVC** pattern. The use of any MVC frameworks (a.e. Spring MVC) was not allowed. The use of Project Lombok was not allowed.
 4. The system is multilingual:  
    * the interface can be switched between UA/EN languages 

@@ -6,10 +6,18 @@ import entity.User;
 import java.util.List;
 
 public class UserService {
+    private final UserDAO userDAO;
+
+    public UserService() {
+        this.userDAO = new UserDAO();
+    }
 
     public List<User> getAllUsers() {
-        UserDAO userDAO = new UserDAO();
         return userDAO.getAllUsers();
+    }
+
+    public List<User> getUserByEmail(String email) {
+        return userDAO.getUserByEmail(email);
     }
 
 }

@@ -1,8 +1,7 @@
 package dao;
 
-import dao.db.DBManager;
+import dao.db.HikariCPDataSource;
 import entity.Service;
-import entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public class ServiceDAO {
 
     public List<Service> getAllServices() {
         List<Service> allServices = new ArrayList<>();
-        try (Connection connection = DBManager.getDBConnection();
+        try (Connection connection = HikariCPDataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL_SERVICES)){
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

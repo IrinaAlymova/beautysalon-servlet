@@ -3,6 +3,9 @@ package entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * User entity, includes Builder and Role Enum
+ */
 public class User implements Serializable {
     private long id;
     private String name;

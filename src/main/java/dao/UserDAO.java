@@ -1,6 +1,6 @@
 package dao;
 
-import dao.db.DBManager;
+import dao.db.HikariCPDataSource;
 import entity.User;
 import static dao.sql.DBConnectionSQL.*;
 
@@ -19,7 +19,7 @@ public class UserDAO {
      */
     public List<User> getUserByEmail(String email) {
         List<User> userList = new ArrayList<>();
-        try (Connection connection = DBManager.getDBConnection();
+        try (Connection connection = HikariCPDataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_USER)) {
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
@@ -41,7 +41,7 @@ public class UserDAO {
         if (userInDb.size() > 0) {
             return false;
         }
-        try (Connection connection = DBManager.getDBConnection();
+        try (Connection connection = HikariCPDataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
@@ -65,7 +65,7 @@ public class UserDAO {
      */
     public boolean deleteUsers(User user) {
         int rowsAffected = 0;
-        try (Connection connection = DBManager.getDBConnection();
+        try (Connection connection = HikariCPDataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_USER)) {
             statement.setString(1, user.getEmail());
             rowsAffected = statement.executeUpdate();
@@ -81,7 +81,7 @@ public class UserDAO {
     public boolean setRoleForUser(User user, User.Role role) {
         long roleId = 0;
         int rowsAffected = 0;
-        try (Connection connection = DBManager.getDBConnection();
+        try (Connection connection = HikariCPDataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(SET_ROLE_FOR_USER)) {
             roleId = getRoleIdByName(role.name());
             statement.setLong(1, roleId);
@@ -99,7 +99,7 @@ public class UserDAO {
      */
     public List<User.Role> getRoleForUser(User user) {
         List<User.Role> result = new ArrayList<>();
-        try (Connection connection = DBManager.getDBConnection();
+        try (Connection connection = HikariCPDataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_ROLE_FOR_USER)) {
             statement.setString(1, user.getEmail());
             ResultSet resultSet = statement.executeQuery();
@@ -117,7 +117,7 @@ public class UserDAO {
      */
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
-        try (Connection connection = DBManager.getDBConnection();
+        try (Connection connection = HikariCPDataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL_USERS)){
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -134,7 +134,7 @@ public class UserDAO {
      * @return role id by its name, or 0 if no such role found
      */
     public long getRoleIdByName(String name) {
-        try (Connection connection = DBManager.getDBConnection();
+        try (Connection connection = HikariCPDataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_ROLE_ID_BY_NAME)) {
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
