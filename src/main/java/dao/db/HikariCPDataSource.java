@@ -9,10 +9,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Class implements DataSource interface with pooled connections
+ */
 public class HikariCPDataSource {
 
-    private static HikariConfig config = new HikariConfig();
-    private static HikariDataSource ds;
+    private static final HikariConfig config = new HikariConfig();
+    private static final HikariDataSource ds;
 
     static {
         Properties properties = new Properties();
@@ -30,10 +33,12 @@ public class HikariCPDataSource {
         ds = new HikariDataSource(config);
     }
 
+    /**
+     * @return connection from the connection pool
+     */
     public static Connection getConnection() throws SQLException {
         return ds.getConnection();
     }
 
     private HikariCPDataSource(){}
-
 }

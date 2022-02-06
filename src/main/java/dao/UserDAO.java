@@ -63,7 +63,7 @@ public class UserDAO {
      * Deletes the user passed as a parameter from the database
      * @return true if the user was deleted, or false if there was no such user in a database
      */
-    public boolean deleteUsers(User user) {
+    public boolean deleteUser(User user) {
         int rowsAffected = 0;
         try (Connection connection = HikariCPDataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_USER)) {

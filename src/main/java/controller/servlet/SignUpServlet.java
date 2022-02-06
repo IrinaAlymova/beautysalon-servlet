@@ -1,6 +1,9 @@
 package controller.servlet;
 
+import controller.hash.MD5HashUtil;
 import controller.validator.SignUpValidator;
+import dto.UserDTO;
+import service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,11 +33,15 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
-        String password = req.getParameter("password");
+        String password = MD5HashUtil.generateHashedPassword(req.getParameter("password"));
         SignUpValidator signUpValidator = new SignUpValidator();
         if (!signUpValidator.validateEmail(email)) {
             //todo: process invalid email
         }
+        UserService userService = new UserService();
+        UserDTO userDTO = new UserDTO(name, email, password);
+        userService.saveUser(userDTO);
+        //TODO: process already existing user
         req.getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
     }
 }
