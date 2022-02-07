@@ -22,7 +22,7 @@ public class HikariCPDataSource {
     static {
         Properties properties = new Properties();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        try(InputStream resourceStream = loader.getResourceAsStream("app.properties")) {
+        try (InputStream resourceStream = loader.getResourceAsStream("app.properties")) {
             properties.load(resourceStream);
         } catch (IOException e) {
             e.printStackTrace();

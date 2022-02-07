@@ -26,7 +26,7 @@ public class UserDAO {
     public List<User> getUserByEmail(String email) {
         List<User> userList = new ArrayList<>();
         try (Connection connection = HikariCPDataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_USER)) {
+             PreparedStatement statement = connection.prepareStatement(GET_USER_BY_EMAIL)) {
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -42,11 +42,33 @@ public class UserDAO {
     }
 
     /**
+     * @return list consisting of one User object corresponding to the id passed as a parameter,
+     * or an empty List if no such user found
+     */
+    public List<User> getUserById(long id) {
+        List<User> userList = new ArrayList<>();
+        try (Connection connection = HikariCPDataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_USER_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                User user = mapUser(resultSet);
+                userList.add(user);
+            } else {
+                logger.info("There's no user with the id: " + id + " in database");
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
+    /**
      * @return true if user email and password exist in database, false otherwise
      */
     public boolean checkUserValidity(User user) {
         try (Connection connection = HikariCPDataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_USER)) {
+             PreparedStatement statement = connection.prepareStatement(GET_USER_BY_EMAIL)) {
             statement.setString(1, user.getEmail());
             ResultSet resultSet = statement.executeQuery();
             //TODO: check DRY in connection with getUserByEmail() method

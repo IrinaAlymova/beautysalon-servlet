@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Filter to access pages for authorized users only
  */
-@WebFilter(filterName = "AuthenticationFilter", urlPatterns = {"/services", "/home", "/"})
+@WebFilter(filterName = "AuthenticationFilter", urlPatterns = {"/bookings", "/services", "/home", "/"})
 public class AuthenticationFilter implements Filter {
 
     @Override
