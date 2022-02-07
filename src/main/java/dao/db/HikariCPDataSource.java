@@ -41,7 +41,6 @@ public class HikariCPDataSource {
      * @return connection from the connection pool
      */
     public static Connection getConnection() throws SQLException {
-        //TODO: fix the connectivity issue
         return ds.getConnection();
     }
 

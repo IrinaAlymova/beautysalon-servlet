@@ -18,7 +18,6 @@ public class HomeServlet extends HttpServlet {
 
     private final Logger logger = LoggerFactory.getLogger(HomeServlet.class);
 
-
     /**
      * Forwards request to the home page
      */
