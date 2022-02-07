@@ -7,11 +7,11 @@ USE beautysalon;
 CREATE TABLE  role
 (
     id BIGINT(20) NOT NULL AUTO_INCREMENT,
-    role_name ENUM ('USER', 'MASTER', 'ADMIN'),
+    name ENUM ('USER', 'MASTER', 'ADMIN'),
     PRIMARY KEY (id)
 );
 
-INSERT INTO role (id, role_name)
+INSERT INTO role (id, name)
 VALUES (DEFAULT, 'USER'),
        (DEFAULT, 'MASTER'),
        (DEFAULT, 'ADMIN');
@@ -23,15 +23,15 @@ CREATE TABLE user
         email VARCHAR(50) NOT NULL UNIQUE,
         password VARCHAR(50) NOT NULL,
         role_id BIGINT(20) NOT NULL,
-        created DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY (id),
         FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
 INSERT INTO user (id, name, email, password, role_id, created)
-VALUES (DEFAULT, 'Irina Alymova', 'i.o.alymova@gmail.com', 'qwerty', 3, DEFAULT),
-       (DEFAULT, 'Brigitte Fine', 'bridgite.fine@mymail.com', 'qwerty', 1, DEFAULT),
-       (DEFAULT, 'Cynthia Kim', 'cynthia.kim@mymail.com', 'qwerty', 1, DEFAULT),
-       (DEFAULT, 'Camilla Bridge', 'camilla.bridge@mymail.com', 'qwerty', 2, DEFAULT),
-       (DEFAULT, 'Lolly Finch', 'lolly.finch@mymail.com', 'qwerty', 2, DEFAULT),
-       (DEFAULT, 'Samantha Jones', 'smantha.jones@mymail.com', 'qwerty', 2, DEFAULT);
+VALUES (DEFAULT, 'Irina Alymova', 'i.o.alymova@gmail.com', 'd8578edf8458ce06fbc5bb76a58c5ca4', 3, DEFAULT),
+       (DEFAULT, 'Brigitte Fine', 'bridgite.fine@mymail.com', 'd8578edf8458ce06fbc5bb76a58c5ca4', 1, DEFAULT),
+       (DEFAULT, 'Cynthia Kim', 'cynthia.kim@mymail.com', 'd8578edf8458ce06fbc5bb76a58c5ca4', 1, DEFAULT),
+       (DEFAULT, 'Camilla Bridge', 'camilla.bridge@mymail.com', 'd8578edf8458ce06fbc5bb76a58c5ca4', 2, DEFAULT),
+       (DEFAULT, 'Lolly Finch', 'lolly.finch@mymail.com', 'd8578edf8458ce06fbc5bb76a58c5ca4', 2, DEFAULT),
+       (DEFAULT, 'Samantha Jones', 'smantha.jones@mymail.com', 'd8578edf8458ce06fbc5bb76a58c5ca4', 2, DEFAULT);

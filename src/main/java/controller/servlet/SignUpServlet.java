@@ -1,6 +1,6 @@
 package controller.servlet;
 
-import controller.hash.MD5HashUtil;
+import controller.security.HashUtil;
 import controller.validator.SignUpValidator;
 import dto.UserDTO;
 import org.slf4j.Logger;
@@ -22,6 +22,15 @@ public class SignUpServlet extends HttpServlet {
 
     private final Logger logger = LoggerFactory.getLogger(SignUpServlet.class);
 
+    private SignUpValidator signUpValidator;
+    private UserService userService;
+
+    @Override
+    public void init() throws ServletException {
+        signUpValidator = new SignUpValidator();
+        userService = new UserService();
+    }
+
     /**
      * Forwards request to the Sign-Up Page
      */
@@ -37,16 +46,19 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
-        String password = MD5HashUtil.generateHashedPassword(req.getParameter("password"));
-        logger.info("Saving user with parameters: name: " + name + ", email: " + email + ", password: " + password);
-        SignUpValidator signUpValidator = new SignUpValidator();
+        String password = HashUtil.generateMD5HashedPassword(req.getParameter("password"));
+        logger.info("Saving user with parameters: name: " + name + ", email: " + email);
         if (!signUpValidator.validateEmail(email)) {
             //todo: process invalid email
+            logger.info("User has invalid parameters: name: " + name + ", email: " + email + " saving failed");
         }
-        UserService userService = new UserService();
-        UserDTO userDTO = new UserDTO(name, email, password);
-        userService.saveUser(userDTO);
         //TODO: process already existing user
-        req.getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
+        UserDTO userDTO = new UserDTO(name, email, password);
+        if (userService.saveUser(userDTO)) {
+            logger.info("User with parameters: name: " + name + ", email: " + email + " was successfully saved");
+        } else {
+            logger.info("User with parameters: name: " + name + ", email: " + email + " saving failed");
+        }
+        resp.sendRedirect(req.getContextPath() + "/login");
     }
 }

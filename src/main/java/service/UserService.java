@@ -14,7 +14,6 @@ public class UserService {
     }
 
     public boolean saveUser(UserDTO userDTO) {
-        UserDAO userDAO = new UserDAO();
         User user = User.newBuilder()
                 .setName(userDTO.getName())
                 .setEmail(userDTO.getEmail())
@@ -22,6 +21,14 @@ public class UserService {
                 .setRole(User.Role.USER)
                 .build();
         return userDAO.insertUser(user);
+    }
+
+    public boolean logIn(UserDTO userDTO) {
+        User user = User.newBuilder()
+                .setEmail(userDTO.getEmail())
+                .setPassword(userDTO.getPassword())
+                .build();
+        return userDAO.checkUserValidity(user);
     }
 
     public List<User> getAllUsers() {

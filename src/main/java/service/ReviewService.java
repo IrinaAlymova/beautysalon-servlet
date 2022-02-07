@@ -1,5 +1,6 @@
 package service;
 
+import dao.UserDAO;
 import service.mailing.MailSender;
 import service.mailing.ReviewMailSender;
 

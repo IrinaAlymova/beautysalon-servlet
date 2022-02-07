@@ -2,6 +2,8 @@ package dao;
 
 import dao.db.HikariCPDataSource;
 import entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static dao.sql.DBConnectionSQL.*;
 
@@ -14,6 +16,9 @@ import java.util.List;
  */
 public class UserDAO {
 
+    private final Logger logger = LoggerFactory.getLogger(UserDAO.class);
+
+    //TODO: consider adding DAO interface and using it in other classes instead of specific implementation
     /**
      * @return list consisting of one User object corresponding to the email passed as a parameter,
      * or an empty List if no such user found
@@ -24,12 +29,35 @@ public class UserDAO {
              PreparedStatement statement = connection.prepareStatement(GET_USER)) {
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
-            User user = mapUser(resultSet);
-            userList.add(user);
+            if (resultSet.next()) {
+                User user = mapUser(resultSet);
+                userList.add(user);
+            } else {
+                logger.info("There's no user with the email: " + email + " in database");
+            }
         } catch(SQLException e) {
             e.printStackTrace();
         }
         return userList;
+    }
+
+    /**
+     * @return true if user email and password exist in database, false otherwise
+     */
+    public boolean checkUserValidity(User user) {
+        try (Connection connection = HikariCPDataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_USER)) {
+            statement.setString(1, user.getEmail());
+            ResultSet resultSet = statement.executeQuery();
+            //TODO: check DRY in connection with getUserByEmail() method
+            if (resultSet.next()) {
+                return user.getEmail().equals(resultSet.getString("email")) &&
+                        user.getPassword().equals(resultSet.getString("password"));
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 
@@ -40,24 +68,22 @@ public class UserDAO {
     public boolean insertUser(User user) {
         List<User> userInDb = getUserByEmail(user.getEmail());
         if (userInDb.size() > 0) {
+            logger.info("Insert user failed: the user with email : " + user.getEmail() + " already exists in database");
             return false;
         }
+        int rowsAffected = 0;
         try (Connection connection = HikariCPDataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPassword());
-            statement.setString(4, user.getRole().name());
-            statement.executeUpdate();
-            ResultSet resultSet = statement.getGeneratedKeys();
-            if (resultSet.next()) {
-                user.setId(resultSet.getInt(1));
-                user.setCreated(resultSet.getTimestamp("created").toLocalDateTime());
-            }
+            statement.setLong(4, getRoleIdByName(user.getRole().name()));
+            rowsAffected = statement.executeUpdate();
+            //TODO: return id and created values to user to save in session
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
+        return rowsAffected > 0;
     }
 
     /**
@@ -154,8 +180,8 @@ public class UserDAO {
     private User mapUser(ResultSet resultSet) {
         try {
             return User.newBuilder()
-                    .setId(resultSet.getLong("id"))
-                    .setName(resultSet.getString("name"))
+                    .setId(resultSet.getLong("user_id"))
+                    .setName(resultSet.getString("user_name"))
                     .setEmail(resultSet.getString("email"))
                     .setPassword(resultSet.getString("password"))
                     .setRole(User.Role.valueOf(resultSet.getString("role_name")))

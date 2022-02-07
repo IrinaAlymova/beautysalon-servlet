@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName = "AuthenticationFilter",
-        urlPatterns = {"/services"})
+/**
+ * Filter to access pages for authorized users only
+ */
+@WebFilter(filterName = "AuthenticationFilter", urlPatterns = {"/services", "/home", "/"})
 public class AuthenticationFilter implements Filter {
 
     @Override
@@ -17,7 +19,7 @@ public class AuthenticationFilter implements Filter {
     }
 
     /**
-     * Checks if session of this request contains necessary attribute, forwards to login page
+     * Checks if session of this request contains user email attribute, forwards to login page
      * in case there's no necessary attribute or no session is associated with this request
      */
     @Override
@@ -25,7 +27,7 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
+        if (session == null || session.getAttribute("email") == null) {
             request.getServletContext().getRequestDispatcher("/login").forward(request, response);
         }
         chain.doFilter(request, response);

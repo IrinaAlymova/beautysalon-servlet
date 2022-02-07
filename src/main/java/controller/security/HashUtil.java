@@ -1,12 +1,22 @@
-package controller.hash;
+package controller.security;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class MD5HashUtil {
+/**
+ * Util class containing methods for hashing strings using various algorithms
+ */
+public class HashUtil {
 
-    public static String generateHashedPassword(String password) {
+    /**
+     * @return user password hashed using MD5 algorithm, or an empty string in case
+     * no valid password was passed as an argument
+     */
+    public static String generateMD5HashedPassword(String password) {
         String generatedPassword = "";
+        if (password == null || password.equals("")) {
+            return "";
+        }
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(password.getBytes());

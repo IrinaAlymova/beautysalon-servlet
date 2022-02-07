@@ -34,12 +34,6 @@ public class HikariCPDataSource {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        config.setConnectionTimeout(20000);
-        config.setMinimumIdle(10);
-        config.setMaximumPoolSize(10);
-        config.setIdleTimeout(10000);
-        config.setMaxLifetime(1000);
-        config.setAutoCommit(true);
         ds = new HikariDataSource(config);
     }
 
@@ -47,7 +41,7 @@ public class HikariCPDataSource {
      * @return connection from the connection pool
      */
     public static Connection getConnection() throws SQLException {
-        //TODO: fix connectivity issue
+        //TODO: fix the connectivity issue
         return ds.getConnection();
     }
 
