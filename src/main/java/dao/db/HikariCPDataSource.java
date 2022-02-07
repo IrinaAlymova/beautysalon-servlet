@@ -2,9 +2,11 @@ package dao.db;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -19,17 +21,25 @@ public class HikariCPDataSource {
 
     static {
         Properties properties = new Properties();
-        try (FileReader reader = new FileReader("app.properties")){
-            properties.load(reader);
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        try(InputStream resourceStream = loader.getResourceAsStream("app.properties")) {
+            properties.load(resourceStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        config.setDriverClassName(properties.getProperty("connection.driver"));
         config.setJdbcUrl(properties.getProperty("connection.url"));
         config.setUsername(properties.getProperty("connection.user"));
         config.setPassword(properties.getProperty("connection.password"));
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.setConnectionTimeout(20000);
+        config.setMinimumIdle(10);
+        config.setMaximumPoolSize(10);
+        config.setIdleTimeout(10000);
+        config.setMaxLifetime(1000);
+        config.setAutoCommit(true);
         ds = new HikariDataSource(config);
     }
 
@@ -37,6 +47,7 @@ public class HikariCPDataSource {
      * @return connection from the connection pool
      */
     public static Connection getConnection() throws SQLException {
+        //TODO: fix connectivity issue
         return ds.getConnection();
     }
 

@@ -3,6 +3,8 @@ package controller.servlet;
 import controller.hash.MD5HashUtil;
 import controller.validator.SignUpValidator;
 import dto.UserDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import service.UserService;
 
 import javax.servlet.ServletException;
@@ -17,6 +19,8 @@ import java.io.IOException;
  */
 @WebServlet(name = "SignUpServlet", urlPatterns = "/signup")
 public class SignUpServlet extends HttpServlet {
+
+    private final Logger logger = LoggerFactory.getLogger(SignUpServlet.class);
 
     /**
      * Forwards request to the Sign-Up Page
@@ -34,6 +38,7 @@ public class SignUpServlet extends HttpServlet {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         String password = MD5HashUtil.generateHashedPassword(req.getParameter("password"));
+        logger.info("Saving user with parameters: name: " + name + ", email: " + email + ", password: " + password);
         SignUpValidator signUpValidator = new SignUpValidator();
         if (!signUpValidator.validateEmail(email)) {
             //todo: process invalid email

@@ -39,7 +39,7 @@ Created as a final study project for Epam Java Course.
 5. Several design patterns were implemented in the system, such as Builder, Singleton, Listener.
 6. Repeated request to the server protection is in place (Post/Redirect/Get).
 7. System supports authentication and authorization, user rights distribution.
-8. All passwords are encoded.
+8. All passwords are secured using **MD5** hashing.
 9. Logging is implemented using **Log4j** library.
 10. Important pieces of code are covered with **JavaDoc** comments.
 11. The system is covered with unit test using **JUnit** library.
